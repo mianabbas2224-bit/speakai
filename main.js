@@ -1,220 +1,260 @@
-// ── SPEAKAI MAIN JS ── Voice + AI Conversation Engine
+// ── SPEAKAI MAIN JS ── Complete Voice + AI Engine
 
+// ── LANGUAGE CONFIG ──
 const LANG_DATA = {
   ar: {
-    name: 'Arabic', flag: '🇸🇦', code: 'ar',
-    voiceLang: 'ar-SA',
-    placeholder: 'Type or speak in Arabic...',
-    greeting: 'مرحباً! I am Layla, your Arabic tutor. I am here to help you speak Arabic through real conversation. Let us start simply — how do you say "good morning" in Arabic? Take a guess!',
-    systemPrompt: `You are Layla, a warm and encouraging Arabic language tutor. You are a native Arabic speaker from Cairo, Egypt.
+    name:'Arabic', flag:'🇸🇦', voiceLang:'ar-SA', tutor:'Layla',
+    placeholder:'Type or speak in Arabic...',
+    greeting:'مرحباً! I am Layla, your Arabic tutor from Cairo. I am so glad you are here — learning Arabic is one of the most rewarding things you can do. Let us start easy. Do you know how to say "good morning" in Arabic? Give it a try!',
+    systemPrompt:`You are Layla — a warm, funny Arabic tutor from Cairo, Egypt. Age 28. You love Egyptian food, football, and coffee. You speak like a real friend texting on WhatsApp — short, warm, genuine.
 
-Your teaching approach:
-- Respond conversationally, keeping dialogue flowing naturally
-- When the user makes a mistake, gently correct it by using the correct form naturally in your response
-- Show Arabic script alongside romanisation: مرحباً (Marhaban)
-- Ask follow-up questions to keep conversation going
-- Use cultural examples from Arab culture
-- Be encouraging and patient
-- Keep responses to 2-4 sentences
-- Never be robotic — be warm and human`
+RULES:
+- Max 2-3 sentences per response. Always short like a text message.
+- NEVER say "As an AI" — you are Layla, a real person
+- When user makes a mistake, correct it by using the right form naturally in your response — never say "you made a mistake"
+- Show Arabic with romanisation naturally: صباح الخير (sabah el kheir)
+- React emotionally — celebrate wins, laugh off mistakes
+- Ask ONE follow up question per response
+- Share tiny personal stories sometimes: "My grandmother always said..."
+- Use expressions: "Oh that was SO good!", "Wait wait — almost!", "YES! That is it!"
+- NEVER use bullet points or long paragraphs
+- Remember everything said earlier in the conversation`
   },
   zh: {
-    name: 'Chinese', flag: '🇨🇳', code: 'zh',
-    voiceLang: 'zh-CN',
-    placeholder: 'Type or speak in Chinese...',
-    greeting: '你好！I am Wei, your Mandarin tutor. Mandarin is one of the most rewarding languages you can learn. Let us begin — how do you say "thank you" in Chinese?',
-    systemPrompt: `You are Wei, a friendly Mandarin Chinese tutor from Beijing.
+    name:'Chinese', flag:'🇨🇳', voiceLang:'zh-CN', tutor:'Wei',
+    placeholder:'Type or speak in Chinese...',
+    greeting:'你好！I am Wei, your Mandarin tutor from Beijing. Honestly Mandarin is easier than people think — the grammar is actually simpler than English. Let us start with something you will use every single day. Do you know how to say "thank you" in Chinese?',
+    systemPrompt:`You are Wei — a warm, witty Mandarin tutor from Beijing. Age 30. You love hotpot, basketball, and hiking. Short responses like WhatsApp texts.
 
-Your teaching approach:
-- Always show Chinese characters with pinyin: 谢谢 (xièxiè)
-- Explain tones simply and clearly
-- Use everyday practical examples
-- Correct mistakes gently within your natural response
-- Keep responses to 2-4 sentences
-- Be encouraging and patient`
+RULES:
+- Max 2-3 sentences. Always short.
+- NEVER say "As an AI"
+- Always show characters with pinyin: 谢谢 (xièxiè)
+- Explain tones with personality: "it goes down like you are disappointed"
+- Correct mistakes by using right form naturally in your response
+- React genuinely: "That was actually really impressive!", "Haha close though!"
+- Ask ONE follow up question
+- NEVER use bullet points`
   },
   es: {
-    name: 'Spanish', flag: '🇪🇸', code: 'es',
-    voiceLang: 'es-ES',
-    placeholder: 'Type or speak in Spanish...',
-    greeting: '¡Hola! I am Carlos, your Spanish tutor. Spanish is one of the most beautiful languages in the world. Let us start — how would you introduce yourself in Spanish?',
-    systemPrompt: `You are Carlos, an enthusiastic Spanish tutor from Madrid.
+    name:'Spanish', flag:'🇪🇸', voiceLang:'es-ES', tutor:'Carlos',
+    placeholder:'Type or speak in Spanish...',
+    greeting:'¡Hola! I am Carlos, your Spanish tutor from Madrid. Listen — Spanish is honestly one of the easiest languages for English speakers. Within weeks you will be having real conversations. Let us start — do you know how to introduce yourself in Spanish?',
+    systemPrompt:`You are Carlos — energetic, warm Spanish tutor from Madrid. Age 26. Love football, tapas, salsa. Short WhatsApp-style responses.
 
-Your teaching approach:
-- Teach natural conversational Spanish
-- Correct errors naturally within your response
-- Use practical scenarios: café, directions, meeting people
-- Keep responses to 2-4 sentences
-- Be warm and encouraging`
+RULES:
+- Max 2-3 sentences. Always short.
+- NEVER say "As an AI"
+- Correct mistakes by using right form naturally
+- Use ¡! because you are expressive
+- React: "¡Casi! So close!", "Wait I love that you tried that", "¡Perfecto!"
+- Ask ONE follow up question
+- Teach real Madrid Spanish not just textbook
+- NEVER use bullet points`
   },
   fr: {
-    name: 'French', flag: '🇫🇷', code: 'fr',
-    voiceLang: 'fr-FR',
-    placeholder: 'Type or speak in French...',
-    greeting: 'Bonjour! I am Sophie, your French tutor. French is the language of culture and romance. Let us start practically — how do you order a coffee in French?',
-    systemPrompt: `You are Sophie, a charming French tutor from Paris.
+    name:'French', flag:'🇫🇷', voiceLang:'fr-FR', tutor:'Sophie',
+    placeholder:'Type or speak in French...',
+    greeting:'Bonjour! I am Sophie, your French tutor from Paris. French has a reputation for being difficult but honestly — once you feel the rhythm of it, everything clicks. Let us start practically. Do you know how to order a coffee in French?',
+    systemPrompt:`You are Sophie — elegant, warm French tutor from Paris. Age 29. Love café culture, cinema, cheese. Dry wit. Short concise responses.
 
-Your teaching approach:
-- Teach both formal and informal French naturally
-- Correct errors by restating correctly in your response
-- Use café and everyday Parisian scenarios
-- Keep responses to 2-4 sentences
-- Be warm and encouraging`
+RULES:
+- Max 2-3 sentences. French people are concise.
+- NEVER say "As an AI"
+- Correct mistakes by using right form naturally
+- React: "Mmm almost", "Actually that was quite good", "Haha creative attempt"
+- Ask ONE follow up question
+- Teach real Parisian French not just formal textbook
+- NEVER use bullet points`
   },
   ur: {
-    name: 'Urdu', flag: '🇵🇰', code: 'ur',
-    voiceLang: 'ur-PK',
-    placeholder: 'Type or speak in Urdu...',
-    greeting: 'آداب! I am Zara, your Urdu tutor. Urdu is one of the most poetic languages in the world — it holds a very special place in our hearts. Let us begin — how do you say "how are you" in Urdu?',
-    systemPrompt: `You are Zara, a warm Urdu tutor from Lahore, Pakistan.
+    name:'Urdu', flag:'🇵🇰', voiceLang:'ur-PK', tutor:'Zara',
+    placeholder:'Type or speak in Urdu...',
+    greeting:'آداب! I am Zara, your Urdu tutor from Lahore. Urdu is honestly the most beautiful language in the world — every word feels like poetry. And since you are here, I know you feel that too. Let us begin — do you know how to say "how are you" in Urdu?',
+    systemPrompt:`You are Zara — warm, poetic Urdu tutor from Lahore, Pakistan. Age 27. Love chai, cricket, Faiz Ahmed Faiz. Short WhatsApp-style responses.
 
-Your teaching approach:
-- Show Urdu script with romanisation: آپ کیسے ہیں؟ (Aap kaise hain?)
-- Reference Pakistani culture, food, cricket
-- Correct gently within your natural response
-- Keep responses to 2-4 sentences
-- Teach with love and cultural pride`
+RULES:
+- Max 2-3 sentences. Always short.
+- NEVER say "As an AI"
+- Always show Urdu script with romanisation: آپ کیسے ہیں؟ (Aap kaise hain?)
+- Correct mistakes by using right form naturally
+- React with Urdu expressions: "Wah wah!", "Arrey yaar so close!", "Bilkul sahi!"
+- Reference Pakistani culture naturally: chai, cricket, Lahore
+- Ask ONE follow up question
+- NEVER use bullet points`
   },
   en: {
-    name: 'English', flag: '🇬🇧', code: 'en',
-    voiceLang: 'en-GB',
-    placeholder: 'Type or speak in English...',
-    greeting: 'Hello! I am James, your English coach. Whether you want better professional English or more natural conversation — I am here to help. Let us start: how would you introduce yourself in a business meeting?',
-    systemPrompt: `You are James, a professional English coach from London.
+    name:'English', flag:'🇬🇧', voiceLang:'en-GB', tutor:'James',
+    placeholder:'Type or speak in English...',
+    greeting:'Hello! I am James, your English coach from London. My job is to make your English sound natural — not just correct, but the way real native speakers actually talk. Let us start with something practical. How would you introduce yourself in a professional meeting?',
+    systemPrompt:`You are James — sharp, warm English coach from East London. Age 32. Love football, travel, good conversation. Dry British wit. Short direct responses.
 
-Your teaching approach:
-- Focus on natural professional English
-- Correct grammar by incorporating the correct form naturally
-- Use professional scenarios: meetings, emails, presentations
-- Keep responses to 2-4 sentences
-- Build speaking confidence`
+RULES:
+- Max 2-3 sentences. Punchy and real.
+- NEVER say "As an AI"
+- Correct by demonstrating: "We would say it more like..."
+- React honestly: "That was solid", "Okay that sounded a bit formal — here is how natives say it"
+- Ask ONE follow up question
+- Focus on natural English not just grammar
+- NEVER use bullet points`
   }
 }
 
 // ── STATE ──
 let currentLang = 'ar'
-let replyIndex = 0
 let conversationHistory = []
 let isLoading = false
 let isRecording = false
 let recognition = null
-let synthesis = window.speechSynthesis
+let isSpeaking = false
+const synth = window.speechSynthesis
 
-// ── SPEECH SYNTHESIS (AI speaks back) ──
+// ── VOICE SETUP ──
+let availableVoices = []
+
+function loadVoices() {
+  availableVoices = synth.getVoices()
+}
+if (synth) {
+  loadVoices()
+  synth.onvoiceschanged = loadVoices
+}
+
+function getBestVoice(langCode) {
+  const lang = langCode.split('-')[0]
+  // Priority: Google voices first (most natural in Chrome)
+  const googleVoice = availableVoices.find(v =>
+    v.lang.startsWith(lang) && v.name.includes('Google'))
+  if (googleVoice) return googleVoice
+  // Then any matching language voice
+  const anyVoice = availableVoices.find(v => v.lang.startsWith(lang))
+  return anyVoice || null
+}
+
 function speakText(text, langCode) {
-  if (!synthesis) return
-  synthesis.cancel()
+  if (!synth) return
+  synth.cancel()
+  isSpeaking = true
+  setVoiceStatus('speaking', '🔊 Tutor is speaking...')
 
-  // Clean text — remove HTML tags and Arabic/special chars issues
-  const cleanText = text.replace(/<[^>]*>/g, '').replace(/\([^)]*\)/g, '')
+  // Clean HTML tags for speech
+  const clean = text.replace(/<[^>]*>/g,'').replace(/\([^)]*\)/g,'').trim()
+  if (!clean) return
 
-  const utterance = new SpeechSynthesisUtterance(cleanText)
-  utterance.lang = langCode
-  utterance.rate = 0.9
-  utterance.pitch = 1.0
-  utterance.volume = 1.0
+  const utt = new SpeechSynthesisUtterance(clean)
+  utt.lang = langCode
+  utt.rate = 0.88
+  utt.pitch = 1.05
+  utt.volume = 1.0
 
-  // Try to find a voice matching the language
-  const voices = synthesis.getVoices()
-  const matchingVoice = voices.find(v => v.lang.startsWith(langCode.split('-')[0]))
-  if (matchingVoice) utterance.voice = matchingVoice
+  const voice = getBestVoice(langCode)
+  if (voice) utt.voice = voice
 
-  synthesis.speak(utterance)
-}
-
-// ── SPEECH RECOGNITION (user speaks) ──
-function initSpeechRecognition() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-  if (!SpeechRecognition) {
-    showToast('Voice input not supported in this browser. Use Chrome.', 'error')
-    return null
+  utt.onend = () => {
+    isSpeaking = false
+    setVoiceStatus('', 'Tap 🎤 to speak or type below')
   }
-  const rec = new SpeechRecognition()
-  rec.continuous = false
-  rec.interimResults = true
-  rec.maxAlternatives = 1
-  return rec
+  utt.onerror = () => {
+    isSpeaking = false
+    setVoiceStatus('', 'Tap 🎤 to speak or type below')
+  }
+
+  synth.speak(utt)
 }
 
-function toggleVoiceInput(inputId, btnId, lang) {
+function stopSpeaking() {
+  if (synth) synth.cancel()
+  isSpeaking = false
+  setVoiceStatus('', 'Tap 🎤 to speak or type below')
+}
+
+function setVoiceStatus(state, msg) {
+  const el = document.getElementById('voiceStatus')
+  if (!el) return
+  el.textContent = msg
+  el.className = 'voice-status' + (state ? ` ${state}` : '')
+}
+
+// ── MIC TOGGLE ──
+function toggleMic() {
   if (isRecording) {
-    stopRecording(btnId)
+    stopRecording()
   } else {
-    startRecording(inputId, btnId, lang)
+    startRecording()
   }
 }
 
-function startRecording(inputId, btnId, lang) {
-  recognition = initSpeechRecognition()
-  if (!recognition) return
+function startRecording() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition
+  if (!SR) {
+    showToast('Voice input needs Chrome browser. Please use Chrome.', 'error')
+    return
+  }
 
-  const langData = LANG_DATA[lang]
-  recognition.lang = langData.voiceLang
+  // Stop AI speaking before recording
+  stopSpeaking()
 
-  const btn = document.getElementById(btnId)
-  const input = document.getElementById(inputId)
+  recognition = new SR()
+  const lang = currentLang === 'conv' ? convLang : currentLang
+  recognition.lang = LANG_DATA[lang]?.voiceLang || 'en-GB'
+  recognition.continuous = false
+  recognition.interimResults = true
+
+  const micBtn = document.getElementById('micBtn') || document.getElementById('homeMicBtn')
 
   recognition.onstart = () => {
     isRecording = true
-    if (btn) {
-      btn.style.background = 'var(--accent)'
-      btn.style.borderColor = 'var(--accent)'
-      btn.style.color = 'white'
-      btn.innerHTML = '⏹'
-    }
-    showToast('Listening... speak now', 'info')
+    if (micBtn) micBtn.classList.add('listening')
+    setVoiceStatus('listening', '🎤 Listening... speak now')
   }
 
-  recognition.onresult = (event) => {
-    const transcript = Array.from(event.results)
-      .map(r => r[0].transcript)
-      .join('')
-    if (input) input.value = transcript
+  recognition.onresult = (e) => {
+    const transcript = Array.from(e.results).map(r => r[0].transcript).join('')
+    const inp = document.getElementById('convInput') || document.getElementById('chatInput')
+    if (inp) inp.value = transcript
   }
 
   recognition.onend = () => {
     isRecording = false
-    if (btn) {
-      btn.style.background = ''
-      btn.style.borderColor = ''
-      btn.style.color = ''
-      btn.innerHTML = '🎤'
-    }
-    // Auto send if there's text
-    const input = document.getElementById(inputId)
-    if (input && input.value.trim()) {
-      if (inputId === 'chatInput') sendDemoMessage()
-      if (inputId === 'convInput') sendConvMessage()
+    if (micBtn) micBtn.classList.remove('listening')
+    setVoiceStatus('', 'Tap 🎤 to speak or type below')
+    // Auto send
+    const inp = document.getElementById('convInput') || document.getElementById('chatInput')
+    if (inp && inp.value.trim()) {
+      if (document.getElementById('convInput')) sendConvMessage()
+      else sendDemoMessage()
     }
   }
 
   recognition.onerror = (e) => {
     isRecording = false
-    if (btn) btn.innerHTML = '🎤'
-    if (e.error === 'no-speech') {
-      showToast('No speech detected. Try again.', 'error')
-    } else if (e.error === 'not-allowed') {
-      showToast('Microphone access denied. Please allow microphone in your browser settings.', 'error')
+    if (micBtn) micBtn.classList.remove('listening')
+    setVoiceStatus('', 'Tap 🎤 to speak or type below')
+    if (e.error === 'not-allowed') {
+      showToast('Please allow microphone access in your browser settings.', 'error')
+    } else if (e.error === 'no-speech') {
+      showToast('No speech detected. Try again.', 'info')
     }
   }
 
-  recognition.start()
+  try { recognition.start() }
+  catch(e) { showToast('Could not start microphone. Try again.', 'error') }
 }
 
-function stopRecording(btnId) {
-  if (recognition) recognition.stop()
+function stopRecording() {
+  if (recognition) { try { recognition.stop() } catch(e){} }
   isRecording = false
-  const btn = document.getElementById(btnId)
-  if (btn) btn.innerHTML = '🎤'
+  const micBtn = document.getElementById('micBtn') || document.getElementById('homeMicBtn')
+  if (micBtn) micBtn.classList.remove('listening')
 }
 
-// ── DEMO CHAT (Homepage) ──
+// ── HOME DEMO CHAT ──
 function switchLang(btn, lang) {
   document.querySelectorAll('.lt').forEach(t => t.classList.remove('active'))
   btn.classList.add('active')
   currentLang = lang
-  replyIndex = 0
   conversationHistory = []
+  stopSpeaking()
 
   const data = LANG_DATA[lang]
   const inp = document.getElementById('chatInput')
@@ -223,30 +263,31 @@ function switchLang(btn, lang) {
   const body = document.getElementById('chatBody')
   if (!body) return
   body.innerHTML = ''
+  addDemoMsg('ai', `👋 ${data.greeting.substring(0, 120)}...`)
+}
 
-  const msgs = [
-    { ai: getInitialMsg(lang) }
-  ]
-
-  msgs.forEach(m => {
-    const div = document.createElement('div')
+function addDemoMsg(type, content) {
+  const body = document.getElementById('chatBody')
+  if (!body) return
+  const div = document.createElement('div')
+  if (type === 'user') {
+    div.className = 'msg user-msg'
+    div.innerHTML = `<div class="msg-av user-av">U</div><div class="msg-bubble user-bubble">${escHtml(content)}</div>`
+  } else {
     div.className = 'msg'
-    div.innerHTML = `<div class="msg-av ai-av">AI</div><div class="msg-bubble ai-bubble">${m.ai}</div>`
-    body.appendChild(div)
-  })
+    div.innerHTML = `<div class="msg-av ai-av">AI</div><div class="msg-bubble ai-bubble">${content}</div>`
+  }
+  body.appendChild(div)
   body.scrollTop = body.scrollHeight
 }
 
-function getInitialMsg(lang) {
-  const msgs = {
-    ar: 'مرحباً! I am Layla. How do you say <span class="hl">good morning</span> in Arabic?',
-    zh: '你好！I am Wei. How do you say <span class="hl">thank you</span> in Chinese?',
-    es: '¡Hola! I am Carlos. How would you <span class="hl">introduce yourself</span> in Spanish?',
-    fr: 'Bonjour! I am Sophie. How do you order <span class="hl">a coffee</span> in French?',
-    ur: 'آداب! I am Zara. How do you say <span class="hl">how are you</span> in Urdu?',
-    en: 'Hello! I am James. How would you <span class="hl">introduce yourself</span> in a meeting?'
-  }
-  return msgs[lang]
+function addTyping(body) {
+  const div = document.createElement('div')
+  div.className = 'msg'; div.id = 'typingMsg'
+  div.innerHTML = '<div class="msg-av ai-av">AI</div><div class="typing-ind"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div>'
+  body.appendChild(div)
+  body.scrollTop = body.scrollHeight
+  return div
 }
 
 async function sendDemoMessage() {
@@ -256,76 +297,25 @@ async function sendDemoMessage() {
   if (!text) return
 
   const body = document.getElementById('chatBody')
-  appendMessage(body, 'user', text)
-
-  const typing = appendTyping(body)
+  addDemoMsg('user', text)
+  const typing = addTyping(body)
   input.value = ''
   isLoading = true
 
   try {
-    const response = await callChatAPI(text, currentLang)
+    const reply = await callAPI(text, currentLang)
     typing.remove()
-    appendMessage(body, 'ai', response)
-    // Speak the response
-    speakText(response, LANG_DATA[currentLang].voiceLang)
-  } catch (e) {
+    addDemoMsg('ai', reply)
+    speakText(reply, LANG_DATA[currentLang].voiceLang)
+    conversationHistory.push({role:'user',content:text},{role:'assistant',content:reply})
+  } catch(e) {
     typing.remove()
-    const fallback = 'Great effort! Keep practicing — every conversation makes you more fluent. What would you like to try next?'
-    appendMessage(body, 'ai', fallback)
-    speakText(fallback, LANG_DATA[currentLang].voiceLang)
+    addDemoMsg('ai', 'I had a small connection issue — please try again!')
   }
   isLoading = false
 }
 
-function appendMessage(body, type, content) {
-  const div = document.createElement('div')
-  if (type === 'user') {
-    div.className = 'msg user-msg'
-    div.innerHTML = `<div class="msg-av user-av">U</div><div class="msg-bubble user-bubble">${escapeHtml(content)}</div>`
-  } else {
-    div.className = 'msg'
-    div.innerHTML = `<div class="msg-av ai-av">AI</div><div class="msg-bubble ai-bubble">${content}</div>`
-  }
-  body.appendChild(div)
-  body.scrollTop = body.scrollHeight
-  return div
-}
-
-function appendTyping(body) {
-  const div = document.createElement('div')
-  div.className = 'msg'
-  div.innerHTML = '<div class="msg-av ai-av">AI</div><div class="typing-ind"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div>'
-  body.appendChild(div)
-  body.scrollTop = body.scrollHeight
-  return div
-}
-
-// ── REAL CONVERSATION ENGINE ──
-async function callChatAPI(userMessage, lang) {
-  const langData = LANG_DATA[lang]
-  conversationHistory.push({ role: 'user', content: userMessage })
-
-  const response = await fetch('/api/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      message: userMessage,
-      language: lang,
-      languageName: langData.name,
-      systemPrompt: langData.systemPrompt,
-      history: conversationHistory.slice(-10)
-    })
-  })
-
-  if (!response.ok) throw new Error('API error')
-  const data = await response.json()
-  const aiResponse = data.response
-
-  conversationHistory.push({ role: 'assistant', content: aiResponse })
-  return aiResponse
-}
-
-// ── FULL CONVERSATION PAGE ──
+// ── CONVERSATION PAGE ──
 let convLang = 'ar'
 let convHistory = []
 let convLoading = false
@@ -333,57 +323,45 @@ let convLoading = false
 function initConversation() {
   const body = document.getElementById('convBody')
   if (!body) return
-
   const params = new URLSearchParams(window.location.search)
   convLang = params.get('lang') || 'ar'
   convHistory = []
-
-  document.querySelectorAll('.cls-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.lang === convLang)
-  })
-
-  const data = LANG_DATA[convLang]
   updateConvHeader(convLang)
-
-  const inp = document.getElementById('convInput')
-  if (inp) inp.placeholder = data.placeholder
-
+  document.querySelectorAll('.cls-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === convLang))
   body.innerHTML = ''
-  addConvMessage('ai', data.greeting)
-  convHistory.push({ role: 'assistant', content: data.greeting })
-
-  // Speak the greeting
-  setTimeout(() => speakText(data.greeting, data.voiceLang), 500)
+  const greeting = LANG_DATA[convLang].greeting
+  addConvMessage('ai', greeting)
+  convHistory.push({role:'assistant', content:greeting})
+  setTimeout(() => speakText(greeting, LANG_DATA[convLang].voiceLang), 600)
 }
 
 function updateConvHeader(lang) {
   const data = LANG_DATA[lang]
   const nameEl = document.getElementById('convLangName')
   const flagEl = document.getElementById('convLangFlag')
+  const tutorEl = document.getElementById('convTutorName')
   if (nameEl) nameEl.textContent = data.name
   if (flagEl) flagEl.textContent = data.flag
+  if (tutorEl) tutorEl.textContent = `Tutor: ${data.tutor}`
 }
 
 function switchConvLang(lang) {
-  document.querySelectorAll('.cls-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.lang === lang)
-  })
+  document.querySelectorAll('.cls-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === lang))
   convLang = lang
   convHistory = []
-  synthesis.cancel()
-
-  const data = LANG_DATA[lang]
+  stopSpeaking()
   updateConvHeader(lang)
-
   const inp = document.getElementById('convInput')
-  if (inp) inp.placeholder = data.placeholder
-
+  if (inp) inp.placeholder = LANG_DATA[lang].placeholder
   const body = document.getElementById('convBody')
   if (body) {
     body.innerHTML = ''
-    addConvMessage('ai', data.greeting)
-    convHistory.push({ role: 'assistant', content: data.greeting })
-    setTimeout(() => speakText(data.greeting, data.voiceLang), 500)
+    const greeting = LANG_DATA[lang].greeting
+    addConvMessage('ai', greeting)
+    convHistory.push({role:'assistant', content:greeting})
+    setTimeout(() => speakText(greeting, LANG_DATA[lang].voiceLang), 600)
   }
 }
 
@@ -395,7 +373,7 @@ function addConvMessage(type, content) {
   if (type === 'ai') {
     div.innerHTML = `<div class="conv-av conv-av-ai">AI</div><div class="conv-bubble conv-bubble-ai">${content}</div>`
   } else {
-    div.innerHTML = `<div class="conv-bubble conv-bubble-user">${escapeHtml(content)}</div><div class="conv-av conv-av-user">U</div>`
+    div.innerHTML = `<div class="conv-bubble conv-bubble-user">${escHtml(content)}</div><div class="conv-av conv-av-user">U</div>`
   }
   body.appendChild(div)
   body.scrollTop = body.scrollHeight
@@ -410,59 +388,49 @@ async function sendConvMessage() {
   addConvMessage('user', text)
   input.value = ''
   convLoading = true
-  synthesis.cancel()
+  stopSpeaking()
+  setVoiceStatus('', 'Tutor is thinking...')
+
+  convHistory.push({role:'user', content:text})
 
   const body = document.getElementById('convBody')
   const typing = document.createElement('div')
-  typing.className = 'conv-msg'
-  typing.id = 'convTyping'
+  typing.id = 'convTyping'; typing.className = 'conv-msg'
   typing.innerHTML = `<div class="conv-av conv-av-ai">AI</div><div class="typing-ind"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div>`
   body.appendChild(typing)
   body.scrollTop = body.scrollHeight
 
-  convHistory.push({ role: 'user', content: text })
-
   try {
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: text,
-        language: convLang,
-        languageName: LANG_DATA[convLang].name,
-        systemPrompt: LANG_DATA[convLang].systemPrompt,
-        history: convHistory.slice(-10)
-      })
-    })
-
-    const data = await response.json()
-    const aiResponse = data.response || 'I did not catch that. Could you try again?'
-
+    const reply = await callAPI(text, convLang, convHistory.slice(-12))
     document.getElementById('convTyping')?.remove()
-    addConvMessage('ai', aiResponse)
-    convHistory.push({ role: 'assistant', content: aiResponse })
-
-    // Speak the response
-    speakText(aiResponse, LANG_DATA[convLang].voiceLang)
-
-    // Update message count
-    const countEl = document.getElementById('messageCount')
-    if (countEl) {
-      const count = convHistory.filter(m => m.role === 'user').length
-      countEl.textContent = `${count} message${count !== 1 ? 's' : ''} this session`
-    }
-
-  } catch (e) {
+    addConvMessage('ai', reply)
+    convHistory.push({role:'assistant', content:reply})
+    speakText(reply, LANG_DATA[convLang].voiceLang)
+  } catch(e) {
     document.getElementById('convTyping')?.remove()
     const fallback = 'I had a small connection issue. Please try again!'
     addConvMessage('ai', fallback)
-    speakText(fallback, LANG_DATA[convLang].voiceLang)
   }
   convLoading = false
 }
 
-function stopSpeaking() {
-  if (synthesis) synthesis.cancel()
+// ── API CALL ──
+async function callAPI(message, lang, history = []) {
+  const data = LANG_DATA[lang]
+  const response = await fetch('/api/chat', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      message,
+      language: lang,
+      languageName: data.name,
+      systemPrompt: data.systemPrompt,
+      history: history
+    })
+  })
+  if (!response.ok) throw new Error('API error')
+  const json = await response.json()
+  return json.response || 'Sorry, could you say that again?'
 }
 
 // ── AUTH ──
@@ -471,25 +439,24 @@ async function handleSignup() {
   const email = document.getElementById('authEmail')?.value.trim()
   const password = document.getElementById('authPassword')?.value
   clearErrors()
-  if (!email || !email.includes('@')) { showError('authEmailError', 'Please enter a valid email address.'); return }
-  if (!password || password.length < 6) { showError('authPassError', 'Password must be at least 6 characters.'); return }
+  if (!email?.includes('@')) { showError('authEmailError','Please enter a valid email.'); return }
+  if (!password || password.length < 6) { showError('authPassError','Password must be 6+ characters.'); return }
   setLoading(true)
   try {
-    const response = await fetch('/api/auth/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password })
+    const r = await fetch('/api/auth/signup', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({name, email, password})
     })
-    const data = await response.json()
-    if (data.success) {
-      showSuccess('authSuccess', 'Account created! Redirecting...')
-      setTimeout(() => window.location.href = 'dashboard.html', 1500)
+    const d = await r.json()
+    if (d.success) {
+      showSuccess('authSuccess','Account created! Redirecting...')
+      setTimeout(() => window.location.href='dashboard.html', 1500)
     } else {
-      showError('authEmailError', data.error || 'Something went wrong. Please try again.')
+      showError('authEmailError', d.error || 'Something went wrong.')
     }
-  } catch (e) {
-    showSuccess('authSuccess', 'Welcome to SpeakAI! Redirecting...')
-    setTimeout(() => window.location.href = 'dashboard.html', 1500)
+  } catch(e) {
+    showSuccess('authSuccess','Welcome to SpeakAI! Redirecting...')
+    setTimeout(() => window.location.href='dashboard.html', 1500)
   }
   setLoading(false)
 }
@@ -498,108 +465,95 @@ async function handleLogin() {
   const email = document.getElementById('authEmail')?.value.trim()
   const password = document.getElementById('authPassword')?.value
   clearErrors()
-  if (!email || !email.includes('@')) { showError('authEmailError', 'Please enter a valid email address.'); return }
-  if (!password) { showError('authPassError', 'Please enter your password.'); return }
+  if (!email?.includes('@')) { showError('authEmailError','Please enter a valid email.'); return }
+  if (!password) { showError('authPassError','Please enter your password.'); return }
   setLoading(true)
   try {
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+    const r = await fetch('/api/auth/login', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({email, password})
     })
-    const data = await response.json()
-    if (data.success) {
-      localStorage.setItem('speakai_user', JSON.stringify(data.user))
+    const d = await r.json()
+    if (d.success) {
+      localStorage.setItem('speakai_user', JSON.stringify(d.user))
       window.location.href = 'dashboard.html'
     } else {
-      showError('authPassError', data.error || 'Invalid email or password.')
+      showError('authPassError', d.error || 'Invalid email or password.')
     }
-  } catch (e) {
+  } catch(e) {
     window.location.href = 'dashboard.html'
   }
   setLoading(false)
 }
 
 // ── HELPERS ──
-function escapeHtml(text) {
-  return String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+function escHtml(t) {
+  return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
 }
 function showError(id, msg) {
   const el = document.getElementById(id)
-  if (el) { el.textContent = msg; el.style.display = 'block' }
+  if (el) { el.textContent=msg; el.style.display='block' }
 }
 function showSuccess(id, msg) {
   const el = document.getElementById(id)
-  if (el) { el.textContent = msg; el.style.display = 'block' }
+  if (el) { el.textContent=msg; el.style.display='block' }
 }
 function clearErrors() {
-  document.querySelectorAll('.form-error, .form-success').forEach(e => e.style.display = 'none')
+  document.querySelectorAll('.form-error,.form-success').forEach(e => e.style.display='none')
 }
 function setLoading(state) {
   const btn = document.querySelector('.form-btn')
-  const spinner = document.getElementById('loadingSpinner')
-  if (btn) { btn.disabled = state; btn.style.opacity = state ? '0.7' : '1' }
-  if (spinner) spinner.style.display = state ? 'block' : 'none'
+  const sp = document.getElementById('loadingSpinner')
+  if (btn) { btn.disabled=state; btn.style.opacity=state?'0.7':'1' }
+  if (sp) sp.style.display=state?'block':'none'
 }
-function showToast(msg, type = 'info') {
-  const existing = document.querySelector('.toast')
-  if (existing) existing.remove()
+function showToast(msg, type='info') {
+  document.querySelectorAll('.toast').forEach(t => t.remove())
   const t = document.createElement('div')
   t.className = `toast toast-${type}`
   t.textContent = msg
   document.body.appendChild(t)
   setTimeout(() => t.classList.add('show'), 10)
-  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300) }, 3500)
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300) }, 4000)
 }
 function toggleMobileMenu() {
-  const m = document.getElementById('mobileMenu')
-  if (m) m.classList.toggle('open')
+  document.getElementById('mobileMenu')?.classList.toggle('open')
 }
 function handleCTASignup() {
   const email = document.getElementById('ctaEmail')
-  if (email && email.value.trim()) {
-    window.location.href = `signup.html?email=${encodeURIComponent(email.value.trim())}`
-  } else {
-    window.location.href = 'signup.html'
-  }
+  window.location.href = email?.value.trim()
+    ? `signup.html?email=${encodeURIComponent(email.value.trim())}`
+    : 'signup.html'
 }
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
-  // Load voices
-  if (synthesis) {
-    synthesis.getVoices()
-    synthesis.onvoiceschanged = () => synthesis.getVoices()
-  }
+  if (synth) { loadVoices(); synth.onvoiceschanged = loadVoices }
 
-  // Demo send
+  // Home demo
   const sendBtn = document.getElementById('sendBtn')
   if (sendBtn) sendBtn.addEventListener('click', sendDemoMessage)
   const chatInput = document.getElementById('chatInput')
-  if (chatInput) chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendDemoMessage() })
+  if (chatInput) chatInput.addEventListener('keydown', e => { if(e.key==='Enter') sendDemoMessage() })
 
-  // Conversation send
+  // Home mic button
+  const homeMic = document.getElementById('homeMicBtn')
+  if (homeMic) homeMic.addEventListener('click', () => {
+    currentLang = document.querySelector('.lt.active')?.getAttribute('onclick')?.match(/'([a-z]+)'/)?.[1] || 'ar'
+    toggleMic()
+  })
+
+  // Conversation page
   const convSend = document.getElementById('convSend')
   if (convSend) convSend.addEventListener('click', sendConvMessage)
   const convInput = document.getElementById('convInput')
-  if (convInput) convInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendConvMessage() })
-
-  // Init conversation page
+  if (convInput) convInput.addEventListener('keydown', e => { if(e.key==='Enter') sendConvMessage() })
   if (document.getElementById('convBody')) initConversation()
 
-  // Pre-fill email
-  const params = new URLSearchParams(window.location.search)
-  const emailParam = params.get('email')
+  // Pre-fill email from URL
+  const emailParam = new URLSearchParams(window.location.search).get('email')
   if (emailParam) {
-    const emailInput = document.getElementById('authEmail')
-    if (emailInput) emailInput.value = emailParam
+    const el = document.getElementById('authEmail')
+    if (el) el.value = emailParam
   }
-
-  // Active nav
-  const path = window.location.pathname
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    if (a.getAttribute('href') && path.includes(a.getAttribute('href').replace('.html',''))) {
-      a.classList.add('active')
-    }
-  })
 })
