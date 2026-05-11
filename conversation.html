@@ -3,12 +3,64 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Practice Conversation — SpeakAI</title>
+<title>Practice — SpeakAI</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="styles.css"/>
+<style>
+/* ── WORD TAP TOOLTIP ── */
+.word-span{cursor:pointer;border-bottom:1px dotted rgba(233,69,96,0.5);transition:all .15s;display:inline;}
+.word-span:hover{color:var(--accent);border-bottom-color:var(--accent);}
+.word-tooltip{position:fixed;background:var(--bg4);border:1px solid var(--accent-border);border-radius:12px;padding:12px 16px;font-size:14px;color:var(--text);z-index:9999;max-width:220px;box-shadow:0 8px 30px rgba(0,0,0,0.4);pointer-events:none;opacity:0;transition:opacity .2s;}
+.word-tooltip.show{opacity:1;}
+.wt-original{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:4px;}
+.wt-roman{font-size:13px;color:var(--text3);margin-bottom:4px;}
+.wt-meaning{font-size:14px;color:var(--text);font-weight:500;}
+.wt-example{font-size:12px;color:var(--text2);margin-top:6px;font-style:italic;border-top:1px solid var(--border);padding-top:6px;}
+
+/* ── SESSION REPORT ── */
+.report-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;display:flex;align-items:center;justify-content:center;padding:2rem;}
+.report-card{background:var(--bg3);border:1px solid var(--border2);border-radius:24px;padding:2.5rem;max-width:480px;width:100%;text-align:center;}
+.report-title{font-size:24px;font-weight:800;color:var(--text);margin-bottom:.5rem;}
+.report-sub{font-size:15px;color:var(--text2);margin-bottom:2rem;}
+.report-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;}
+.rs{background:var(--surface);border-radius:14px;padding:1.25rem;}
+.rs-num{font-size:30px;font-weight:800;letter-spacing:-1px;}
+.rs-label{font-size:12px;color:var(--text3);margin-top:4px;}
+.report-mistakes{background:var(--surface);border-radius:14px;padding:1.25rem;margin-bottom:1.5rem;text-align:left;}
+.rm-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:.75rem;}
+.rm-item{font-size:13px;color:var(--text2);padding:.5rem 0;border-bottom:1px solid var(--border);display:flex;gap:.75rem;}
+.rm-item:last-child{border:none;}
+.rm-wrong{color:var(--accent);font-weight:600;}
+.rm-right{color:var(--green);font-weight:600;}
+.report-words{background:var(--surface);border-radius:14px;padding:1.25rem;margin-bottom:1.5rem;text-align:left;}
+.rw-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:.75rem;}
+.rw-list{display:flex;flex-wrap:wrap;gap:8px;}
+.rw-word{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-border);padding:4px 12px;border-radius:50px;font-size:13px;font-weight:600;}
+.report-btns{display:flex;gap:10px;}
+.report-btn{flex:1;padding:13px;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--ff);transition:all .2s;}
+.report-btn-primary{background:var(--accent);border:none;color:white;}
+.report-btn-secondary{background:none;border:1.5px solid var(--border2);color:var(--text2);}
+
+/* ── MIC BUTTON STATES ── */
+.conv-btn-mic.listening{background:var(--accent)!important;border-color:var(--accent)!important;color:white!important;animation:micpulse 1s infinite;}
+@keyframes micpulse{0%,100%{box-shadow:0 0 0 0 rgba(233,69,96,.4)}50%{box-shadow:0 0 0 8px rgba(233,69,96,0)}}
+
+/* ── VOICE STATUS ── */
+.voice-status{text-align:center;font-size:13px;color:var(--text3);padding:.5rem;min-height:24px;transition:all .2s;}
+.voice-status.listening{color:var(--accent);font-weight:600;}
+.voice-status.speaking{color:var(--green);font-weight:600;}
+</style>
 </head>
 <body>
 <div class="conversation-page">
+
+  <!-- WORD TOOLTIP -->
+  <div class="word-tooltip" id="wordTooltip">
+    <div class="wt-original" id="wtOriginal"></div>
+    <div class="wt-roman" id="wtRoman"></div>
+    <div class="wt-meaning" id="wtMeaning"></div>
+    <div class="wt-example" id="wtExample"></div>
+  </div>
 
   <!-- HEADER -->
   <div class="conv-header">
@@ -16,18 +68,18 @@
       <span class="conv-lang-flag" id="convLangFlag">🇸🇦</span>
       <div>
         <div class="conv-lang-name" id="convLangName">Arabic</div>
-        <div class="conv-lang-level">AI Conversation Tutor</div>
+        <div class="conv-lang-level" id="convTutorName">Tutor: Layla</div>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:1rem;">
-      <div class="conv-status"><div class="conv-dot"></div>Live Session</div>
-      <button class="btn btn-ghost" onclick="stopSpeaking()" style="font-size:13px;padding:7px 16px;">⏹ Stop</button>
-      <button class="btn btn-ghost" onclick="window.location.href='dashboard.html'" style="font-size:13px;padding:7px 16px;">End Session</button>
+    <div style="display:flex;align-items:center;gap:.75rem;">
+      <div class="conv-status"><div class="conv-dot"></div><span id="sessionTimer">00:00</span></div>
+      <button class="btn btn-ghost" onclick="stopSpeaking()" style="font-size:13px;padding:7px 14px;">⏹</button>
+      <button class="btn btn-primary" onclick="endSession()" style="font-size:13px;padding:7px 16px;">End Session</button>
     </div>
   </div>
 
-  <!-- LANGUAGE SELECTOR -->
-  <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:.85rem 2rem;">
+  <!-- LANGUAGE TABS -->
+  <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:.75rem 1.5rem;">
     <div class="conv-lang-select">
       <button class="cls-btn active" data-lang="ar" onclick="switchConvLang('ar')">🇸🇦 Arabic</button>
       <button class="cls-btn" data-lang="zh" onclick="switchConvLang('zh')">🇨🇳 Chinese</button>
@@ -38,38 +90,217 @@
     </div>
   </div>
 
-  <!-- VOICE TIP -->
-  <div style="background:var(--accent-dim);border-bottom:1px solid var(--accent-border);padding:.75rem 2rem;text-align:center;">
-    <span style="font-size:14px;color:var(--accent);font-weight:600;">🎤 Tap the microphone to speak · 🔊 AI will speak back to you · Use Chrome for best experience</span>
-  </div>
+  <!-- VOICE STATUS -->
+  <div class="voice-status" id="voiceStatus">Tap 🎤 to speak or type below</div>
 
   <!-- CHAT BODY -->
   <div class="conv-body" id="convBody"></div>
 
-  <!-- INPUT FOOTER -->
+  <!-- INPUT -->
   <div class="conv-footer">
     <div class="session-info">
-      <span id="messageCount">0 messages this session</span>
-      <span style="color:var(--accent);font-weight:600;">🔊 Voice enabled · Powered by Claude AI</span>
+      <span id="messageCount">Session started</span>
+      <span style="color:var(--accent);font-weight:600;font-size:13px;">Tap any word to see meaning</span>
     </div>
     <div class="conv-input-wrap">
-      <button
-        class="conv-btn conv-btn-mic"
-        id="micBtn"
-        title="Click to speak"
-        onclick="toggleVoiceInput('convInput','micBtn', convLang)">
-        🎤
-      </button>
-      <input
-        class="conv-input"
-        id="convInput"
-        placeholder="Type your message or click 🎤 to speak..."
-        autocomplete="off"/>
-      <button class="conv-btn conv-btn-send" id="convSend" title="Send message">→</button>
+      <button class="conv-btn conv-btn-mic" id="micBtn" onclick="toggleMic()" title="Hold to speak">🎤</button>
+      <input class="conv-input" id="convInput" placeholder="Type or tap 🎤 to speak..." autocomplete="off"/>
+      <button class="conv-btn conv-btn-send" id="convSend">→</button>
     </div>
   </div>
-
 </div>
+
 <script src="main.js"></script>
+<script>
+// ── SESSION TRACKING (REAL DATA ONLY) ──
+const session = {
+  startTime: Date.now(),
+  messages: 0,
+  wordsUsed: new Set(),
+  mistakes: [],
+  lang: 'ar'
+}
+
+// ── TIMER ──
+setInterval(() => {
+  const elapsed = Math.floor((Date.now() - session.startTime) / 1000)
+  const mins = String(Math.floor(elapsed / 60)).padStart(2,'0')
+  const secs = String(elapsed % 60).padStart(2,'0')
+  const el = document.getElementById('sessionTimer')
+  if (el) el.textContent = `${mins}:${secs}`
+}, 1000)
+
+// ── WORD TAP FEATURE ──
+const tooltip = document.getElementById('wordTooltip')
+
+function makeWordsTappable(element, lang) {
+  const text = element.innerHTML
+  // Only process text nodes, preserve HTML
+  element.innerHTML = text.replace(/([^\s<>]+)/g, (word) => {
+    const clean = word.replace(/<[^>]*>/g, '').trim()
+    if (!clean || clean.length < 2) return word
+    return `<span class="word-span" onclick="lookupWord('${clean.replace(/'/g,"\\'")}','${lang}',event)">${word}</span>`
+  })
+}
+
+async function lookupWord(word, lang, event) {
+  const tt = document.getElementById('wordTooltip')
+  // Show loading
+  document.getElementById('wtOriginal').textContent = word
+  document.getElementById('wtRoman').textContent = '...'
+  document.getElementById('wtMeaning').textContent = 'Looking up...'
+  document.getElementById('wtExample').textContent = ''
+
+  // Position tooltip near click
+  const x = Math.min(event.clientX + 10, window.innerWidth - 240)
+  const y = Math.min(event.clientY + 10, window.innerHeight - 150)
+  tt.style.left = x + 'px'
+  tt.style.top = y + 'px'
+  tt.classList.add('show')
+
+  // Hide on click elsewhere
+  document.addEventListener('click', hideTooltip, {once: true})
+
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        message: `The word/phrase is: "${word}". Give me: 1) romanisation if not Latin script, 2) English meaning, 3) one short example sentence. Reply in this exact format:
+ROMAN: [romanisation or "already latin"]
+MEANING: [clear simple meaning]
+EXAMPLE: [short example sentence]`,
+        language: lang,
+        languageName: lang,
+        systemPrompt: 'You are a dictionary. Answer ONLY in the exact format requested. Be very brief.',
+        history: []
+      })
+    })
+    const data = await response.json()
+    const text = data.response || ''
+    const roman = text.match(/ROMAN:\s*(.+)/)?.[1]?.trim() || ''
+    const meaning = text.match(/MEANING:\s*(.+)/)?.[1]?.trim() || word
+    const example = text.match(/EXAMPLE:\s*(.+)/)?.[1]?.trim() || ''
+
+    document.getElementById('wtOriginal').textContent = word
+    document.getElementById('wtRoman').textContent = roman === 'already latin' ? '' : roman
+    document.getElementById('wtMeaning').textContent = meaning
+    document.getElementById('wtExample').textContent = example
+  } catch(e) {
+    document.getElementById('wtMeaning').textContent = 'Could not load meaning'
+  }
+}
+
+function hideTooltip() {
+  document.getElementById('wordTooltip').classList.remove('show')
+}
+
+// ── END SESSION REPORT (REAL DATA) ──
+function endSession() {
+  const elapsed = Math.floor((Date.now() - session.startTime) / 1000)
+  const mins = Math.floor(elapsed / 60)
+  const secs = elapsed % 60
+
+  // Only show real data
+  const wordList = Array.from(session.wordsUsed).slice(0, 20)
+  const mistakeList = session.mistakes.slice(0, 5)
+
+  const overlay = document.createElement('div')
+  overlay.className = 'report-overlay'
+  overlay.innerHTML = `
+    <div class="report-card">
+      <div style="font-size:36px;margin-bottom:.5rem;">📊</div>
+      <div class="report-title">Session Complete</div>
+      <div class="report-sub">${LANG_DATA[session.lang]?.flag} ${LANG_DATA[session.lang]?.name} · ${mins}m ${secs}s</div>
+
+      <div class="report-stats">
+        <div class="rs">
+          <div class="rs-num" style="color:var(--accent)">${session.messages}</div>
+          <div class="rs-label">Messages sent</div>
+        </div>
+        <div class="rs">
+          <div class="rs-num" style="color:var(--teal)">${wordList.length}</div>
+          <div class="rs-label">Words used</div>
+        </div>
+        <div class="rs">
+          <div class="rs-num" style="color:var(--gold)">${mins}</div>
+          <div class="rs-label">Minutes practiced</div>
+        </div>
+      </div>
+
+      ${wordList.length > 0 ? `
+      <div class="report-words">
+        <div class="rw-title">Words you used this session</div>
+        <div class="rw-list">
+          ${wordList.map(w => `<span class="rw-word">${w}</span>`).join('')}
+        </div>
+      </div>` : ''}
+
+      ${mistakeList.length > 0 ? `
+      <div class="report-mistakes">
+        <div class="rm-title">Corrections from this session</div>
+        ${mistakeList.map(m => `
+          <div class="rm-item">
+            <span class="rm-wrong">✗ ${m.wrong}</span>
+            <span style="color:var(--text3)">→</span>
+            <span class="rm-right">✓ ${m.right}</span>
+          </div>`).join('')}
+      </div>` : `
+      <div class="report-mistakes">
+        <div class="rm-title">Corrections</div>
+        <div style="font-size:13px;color:var(--text3);padding:.5rem 0;">
+          ${session.messages > 0 ? 'Great session — no major corrections needed!' : 'Start a conversation to see your corrections here.'}
+        </div>
+      </div>`}
+
+      <div class="report-btns">
+        <button class="report-btn report-btn-secondary" onclick="document.querySelector('.report-overlay').remove()">Continue</button>
+        <button class="report-btn report-btn-primary" onclick="window.location.href='index.html'">Back to home</button>
+      </div>
+    </div>
+  `
+  document.body.appendChild(overlay)
+  stopSpeaking()
+}
+
+// ── TRACK REAL WORDS ──
+const origSendConv = sendConvMessage
+window.sendConvMessage = async function() {
+  const input = document.getElementById('convInput')
+  if (input && input.value.trim()) {
+    // Track words user actually typed
+    input.value.trim().split(/\s+/).forEach(w => {
+      if (w.length > 2) session.wordsUsed.add(w.toLowerCase())
+    })
+    session.messages++
+    const count = session.messages
+    const el = document.getElementById('messageCount')
+    if (el) el.textContent = `${count} message${count !== 1 ? 's' : ''} this session`
+  }
+  return origSendConv()
+}
+
+// ── MAKE AI MESSAGES TAPPABLE ──
+const origAddConvMsg = addConvMessage
+window.addConvMessage = function(type, content) {
+  origAddConvMsg(type, content)
+  if (type === 'ai') {
+    // Make last AI message tappable
+    const msgs = document.querySelectorAll('.conv-bubble-ai')
+    const last = msgs[msgs.length - 1]
+    if (last) makeWordsTappable(last, session.lang)
+  }
+}
+
+// ── UPDATE LANG ON SWITCH ──
+const origSwitch = switchConvLang
+window.switchConvLang = function(lang) {
+  session.lang = lang
+  origSwitch(lang)
+  const tutorNames = {ar:'Layla',zh:'Wei',es:'Carlos',fr:'Sophie',ur:'Zara',en:'James'}
+  const el = document.getElementById('convTutorName')
+  if (el) el.textContent = `Tutor: ${tutorNames[lang]}`
+}
+</script>
 </body>
 </html>
