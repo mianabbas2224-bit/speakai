@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pricing — SpeakAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">Speak<span>AI</span></a>
+  <div class="nav-links"><a href="languages.html">Languages</a><a href="features.html">Features</a><a href="pricing.html">Pricing</a><a href="faq.html">FAQ</a></div>
+  <div class="nav-right">
+    <button class="btn btn-ghost" onclick="window.location.href='login.html'">Log in</button>
+    <button class="btn btn-primary" onclick="window.location.href='signup.html'">Start free trial →</button>
+  </div>
+  <button class="nav-mobile-btn" onclick="toggleMobileMenu()">☰</button>
+</nav>
+<div class="mobile-menu" id="mobileMenu"><a href="languages.html">Languages</a><a href="features.html">Features</a><a href="login.html">Log in</a><a href="signup.html" class="mobile-cta">Start free →</a></div>
+<div class="page-hero">
+  <a href="index.html" class="page-hero-back">← Back to home</a>
+  <h1>Simple, honest pricing</h1>
+  <p>No hidden fees. No confusing tiers. One plan that gives you everything you need to become fluent.</p>
+</div>
+<div class="content-section">
+  <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:2.5rem;flex-wrap:wrap;">
+    <span style="font-size:14px;font-weight:600;color:var(--text)" id="mLabel">Monthly</span>
+    <div style="width:48px;height:26px;background:var(--surface2);border-radius:50px;cursor:pointer;position:relative;border:1px solid var(--border2);" id="ts" onclick="toggleP()"><div style="width:20px;height:20px;border-radius:50%;background:white;position:absolute;top:2px;left:2px;transition:left .2s;" id="tk"></div></div>
+    <span style="font-size:14px;color:var(--text3)" id="yLabel">Yearly</span>
+    <span style="background:var(--gold-dim);color:var(--gold);border:1px solid rgba(245,166,35,.25);padding:4px 12px;border-radius:50px;font-size:12px;font-weight:700;">Save 40%</span>
+  </div>
+  <div class="pricing-grid" style="max-width:580px;margin:0 auto 2rem;">
+    <div class="price-card">
+      <div class="price-tag">Free forever</div>
+      <div class="price-name">Explorer</div>
+      <div class="price-amount"><sup>$</sup>0</div>
+      <div class="price-period">No credit card needed</div>
+      <ul class="price-features">
+        <li><div class="check-wrap check-default">✓</div>1 language of your choice</li>
+        <li><div class="check-wrap check-default">✓</div>10 AI conversations per month</li>
+        <li><div class="check-wrap check-default">✓</div>Basic progress tracking</li>
+        <li><div class="check-wrap check-default">✓</div>Text conversations only</li>
+      </ul>
+      <button class="price-btn price-btn-outline" onclick="window.location.href='signup.html'">Get started free</button>
+    </div>
+    <div class="price-card featured">
+      <div class="price-tag">Most popular</div>
+      <div class="price-name">Fluent</div>
+      <div class="price-amount" id="pAmt"><sup>$</sup>15</div>
+      <div class="price-period" id="pPer">per month · cancel anytime</div>
+      <ul class="price-features">
+        <li><div class="check-wrap check-featured">✓</div>All 6 languages</li>
+        <li><div class="check-wrap check-featured">✓</div>Unlimited conversations</li>
+        <li><div class="check-wrap check-featured">✓</div>Voice input and output</li>
+        <li><div class="check-wrap check-featured">✓</div>AI memory and adaptation</li>
+        <li><div class="check-wrap check-featured">✓</div>Full progress dashboard</li>
+        <li><div class="check-wrap check-featured">✓</div>Cultural context lessons</li>
+        <li><div class="check-wrap check-featured">✓</div>Priority support 24/7</li>
+      </ul>
+      <button class="price-btn price-btn-solid" onclick="window.location.href='signup.html'">Start 7-day free trial →</button>
+    </div>
+  </div>
+  <div style="text-align:center;font-size:12px;color:var(--text3);margin-bottom:3rem;">7-day free trial · No credit card required · Cancel anytime</div>
+  <div class="info-block">
+    <h3>Frequently asked pricing questions</h3>
+    <p><strong style="color:var(--text)">Can I cancel anytime?</strong><br/>Yes. Cancel with one click from your account settings. No questions asked, no fees.</p>
+    <p><strong style="color:var(--text)">What happens after the free trial?</strong><br/>After 7 days you can choose to subscribe for $15/month or drop to the free Explorer plan. We never charge you without asking.</p>
+    <p><strong style="color:var(--text)">Do you offer student discounts?</strong><br/>Yes — email us at hello@speakai.com with your student ID for 50% off.</p>
+  </div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div><div class="footer-logo">Speak<span>AI</span></div><div class="footer-tagline">Made with care in Lahore, Pakistan 🇵🇰</div></div>
+    <div class="footer-cols">
+      <div class="footer-col"><div class="footer-col-title">Languages</div><a href="language-arabic.html">Arabic</a><a href="language-chinese.html">Chinese</a><a href="language-spanish.html">Spanish</a><a href="language-urdu.html">Urdu</a></div>
+      <div class="footer-col"><div class="footer-col-title">Product</div><a href="features.html">Features</a><a href="faq.html">FAQ</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 SpeakAI · All rights reserved</div>
+</footer>
+<script src="main.js"></script>
+<script>
+let yearly=false;
+function toggleP(){
+  yearly=!yearly;
+  document.getElementById('ts').style.background=yearly?'var(--accent)':'var(--surface2)';
+  document.getElementById('tk').style.left=yearly?'24px':'2px';
+  document.getElementById('mLabel').style.color=yearly?'var(--text3)':'var(--text)';
+  document.getElementById('yLabel').style.color=yearly?'var(--text)':'var(--text3)';
+  document.getElementById('pAmt').innerHTML=yearly?'<sup>$</sup>9':'<sup>$</sup>15';
+  document.getElementById('pPer').textContent=yearly?'per month · billed $108/year':'per month · cancel anytime';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard — SpeakAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">Speak<span>AI</span></a>
+  <div class="nav-links"><a href="dashboard.html">Dashboard</a><a href="languages.html">Languages</a><a href="pricing.html">Upgrade</a></div>
+  <div class="nav-right"><button class="btn btn-ghost" onclick="window.location.href='index.html'">Log out</button></div>
+</nav>
+<div style="padding:3rem 2rem;max-width:740px;margin:0 auto;">
+  <div style="margin-bottom:2rem;">
+    <div class="sec-eyebrow" style="text-align:left">Welcome back</div>
+    <h1 style="font-size:28px;font-weight:800;color:var(--text);letter-spacing:-0.5px;margin-bottom:.5rem;">Good to see you again 👋</h1>
+    <p style="color:var(--text2);font-size:15px;">You are on a <strong style="color:var(--gold)">14-day streak</strong>. Keep it going!</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem;">
+    <div class="mini-stat" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem;text-align:center;"><div style="font-size:28px;font-weight:800;color:var(--accent)">847</div><div style="font-size:12px;color:var(--text3);margin-top:4px;">Words mastered</div></div>
+    <div class="mini-stat" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem;text-align:center;"><div style="font-size:28px;font-weight:800;color:var(--teal)">124</div><div style="font-size:12px;color:var(--text3);margin-top:4px;">Conversations</div></div>
+    <div class="mini-stat" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem;text-align:center;"><div style="font-size:28px;font-weight:800;color:var(--gold)">14</div><div style="font-size:12px;color:var(--text3);margin-top:4px;">Day streak 🔥</div></div>
+    <div class="mini-stat" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem;text-align:center;"><div style="font-size:28px;font-weight:800;color:var(--green)">B2</div><div style="font-size:12px;color:var(--text3);margin-top:4px;">Arabic level</div></div>
+  </div>
+  <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:1.25rem;">
+    <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:1.25rem;">Your languages</div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:13px;font-weight:600;color:var(--text)">🇸🇦 Arabic</span><span style="font-size:13px;font-weight:700;color:var(--accent)">68%</span></div><div style="background:var(--surface2);border-radius:50px;height:7px;overflow:hidden;"><div style="width:68%;height:100%;border-radius:50px;background:var(--accent);"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:13px;font-weight:600;color:var(--text)">🇪🇸 Spanish</span><span style="font-size:13px;font-weight:700;color:var(--blue)">45%</span></div><div style="background:var(--surface2);border-radius:50px;height:7px;overflow:hidden;"><div style="width:45%;height:100%;border-radius:50px;background:var(--blue);"></div></div></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+    <div style="background:var(--accent);border-radius:var(--rl);padding:1.5rem;cursor:pointer;" onclick="window.location.href='language-arabic.html'"><div style="font-size:22px;margin-bottom:.5rem;">🇸🇦</div><div style="font-size:15px;font-weight:700;color:white;margin-bottom:4px;">Continue Arabic</div><div style="font-size:12px;color:rgba(255,255,255,0.7);">Pick up where you left off →</div></div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;cursor:pointer;" onclick="window.location.href='languages.html'"><div style="font-size:22px;margin-bottom:.5rem;">➕</div><div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;">Add a language</div><div style="font-size:12px;color:var(--text3);">Start learning something new →</div></div>
+  </div>
+</div>
+<script src="main.js"></script>
+</body>
+</html>

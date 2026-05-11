@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FAQ — SpeakAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">Speak<span>AI</span></a>
+  <div class="nav-links"><a href="languages.html">Languages</a><a href="features.html">Features</a><a href="pricing.html">Pricing</a><a href="faq.html">FAQ</a></div>
+  <div class="nav-right">
+    <button class="btn btn-ghost" onclick="window.location.href='login.html'">Log in</button>
+    <button class="btn btn-primary" onclick="window.location.href='signup.html'">Start free trial →</button>
+  </div>
+  <button class="nav-mobile-btn" onclick="toggleMobileMenu()">☰</button>
+</nav>
+<div class="mobile-menu" id="mobileMenu"><a href="languages.html">Languages</a><a href="features.html">Features</a><a href="login.html">Log in</a><a href="signup.html" class="mobile-cta">Start free →</a></div>
+<div class="page-hero">
+  <a href="index.html" class="page-hero-back">← Back to home</a>
+  <h1>Frequently asked questions</h1>
+  <p>Honest answers to everything you want to know before you start.</p>
+</div>
+<div class="content-section">
+  <div style="display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:2rem;">
+    <div class="faq-item" onclick="tf(this)"><div style="display:flex;align-items:center;justify-content:space-between;padding:1.35rem 1.5rem;font-size:14px;font-weight:600;color:var(--text);">Is SpeakAI actually better than Duolingo?<span class="fi">+</span></div><div class="fa">Duolingo teaches vocabulary and grammar through quizzes. SpeakAI teaches you to have real conversations through actual AI dialogue. They solve different problems — we solve fluency, which is what most people actually want.</div></div>
+    <div class="faq-item" onclick="tf(this)"><div style="display:flex;align-items:center;justify-content:space-between;padding:1.35rem 1.5rem;font-size:14px;font-weight:600;color:var(--text);">Do I need any prior language knowledge?<span class="fi">+</span></div><div class="fa">Absolutely zero. Your AI tutor starts at complete beginner level and builds at your exact pace. It adapts entirely to where you are right now.</div></div>
+    <div class="faq-item" onclick="tf(this)"><div style="display:flex;align-items:center;justify-content:space-between;padding:1.35rem 1.5rem;font-size:14px;font-weight:600;color:var(--text);">How many minutes per day do I need?<span class="fi">+</span></div><div class="fa">Even 15 minutes a day produces measurable fluency gains. Our most successful learners do 2-3 short sessions daily. Consistency beats intensity every time.</div></div>
+    <div class="faq-item" onclick="tf(this)"><div style="display:flex;align-items:center;justify-content:space-between;padding:1.35rem 1.5rem;font-size:14px;font-weight:600;color:var(--text);">Can I learn multiple languages at once?<span class="fi">+</span></div><div class="fa">Yes — the Fluent plan gives you full access to all 6 languages. Your progress, vocabulary, and AI memory are tracked completely separately for each language.</div></div>
+    <div class="faq-item" onclick="tf(this)"><div style="display:flex;align-items:center;justify-content:space-between;padding:1.35rem 1.5rem;font-size:14px;font-weight:600;color:var(--text);">Is my progress saved between sessions?<span class="fi">+</span></div><div class="fa">Absolutely. Your AI tutor remembers every mistake you made, every word you learned, and every concept you struggled with — building intelligently on every previous session.</div></div>
+    <div class="faq-item" onclick="tf(this)"><div style="display:flex;align-items:center;justify-content:space-between;padding:1.35rem 1.5rem;font-size:14px;font-weight:600;color:var(--text);">Can I cancel my subscription anytime?<span class="fi">+</span></div><div class="fa">Yes, cancel anytime with one click from your account settings. No questions asked, no cancellation fees, no awkward retention flow.</div></div>
+    <div class="faq-item" onclick="tf(this)"><div style="display:flex;align-items:center;justify-content:space-between;padding:1.35rem 1.5rem;font-size:14px;font-weight:600;color:var(--text);">What makes the Arabic and Urdu experience special?<span class="fi">+</span></div><div class="fa">SpeakAI was built with deep roots in South Asian and Middle Eastern culture. Our Arabic and Urdu tutors use real cultural references, local expressions, and authentic context that Western apps completely miss.</div></div>
+    <div class="faq-item" onclick="tf(this)"><div style="display:flex;align-items:center;justify-content:space-between;padding:1.35rem 1.5rem;font-size:14px;font-weight:600;color:var(--text);">Does SpeakAI work on mobile?<span class="fi">+</span></div><div class="fa">Yes — SpeakAI is fully mobile responsive and works beautifully on any phone or tablet browser. A dedicated mobile app is coming in 2026.</div></div>
+  </div>
+  <div class="cta-inline">
+    <h3>Still have questions?</h3>
+    <p>Email us at hello@speakai.com and we will reply within 24 hours.</p>
+    <button class="cta-inline-btn" onclick="window.location.href='signup.html'">Start free trial →</button>
+  </div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div><div class="footer-logo">Speak<span>AI</span></div><div class="footer-tagline">Made with care in Lahore, Pakistan 🇵🇰</div></div>
+    <div class="footer-cols">
+      <div class="footer-col"><div class="footer-col-title">Languages</div><a href="language-arabic.html">Arabic</a><a href="language-chinese.html">Chinese</a><a href="language-urdu.html">Urdu</a></div>
+      <div class="footer-col"><div class="footer-col-title">Product</div><a href="features.html">Features</a><a href="pricing.html">Pricing</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 SpeakAI · All rights reserved</div>
+</footer>
+<script src="main.js"></script>
+<script>
+function tf(el){
+  const open=el.classList.contains('op');
+  document.querySelectorAll('.faq-item').forEach(f=>{f.classList.remove('op');const fa=f.querySelector('.fa');if(fa){fa.style.maxHeight='0';fa.style.padding='0 1.5rem';}const fi=f.querySelector('.fi');if(fi){fi.style.transform='rotate(0deg)';fi.style.color='var(--text3)';}});
+  if(!open){el.classList.add('op');const fa=el.querySelector('.fa');if(fa){fa.style.maxHeight='150px';fa.style.padding='0 1.5rem 1.35rem';}const fi=el.querySelector('.fi');if(fi){fi.style.transform='rotate(45deg)';fi.style.color='var(--accent)';}}
+}
+document.querySelectorAll('.fi').forEach(f=>{f.style.fontSize='20px';f.style.color='var(--text3)';f.style.transition='transform .3s,color .3s';f.style.flexShrink='0';f.style.marginLeft='1rem';});
+document.querySelectorAll('.fa').forEach(f=>{f.style.fontSize='13px';f.style.color='var(--text2)';f.style.lineHeight='1.7';f.style.maxHeight='0';f.style.overflow='hidden';f.style.transition='max-height .35s ease,padding .35s ease';f.style.padding='0 1.5rem';f.style.fontWeight='400';});
+</script>
+</body>
+</html>

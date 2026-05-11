@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Practice Conversation — SpeakAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<div class="conversation-page">
+  <div class="conv-header">
+    <div class="conv-info">
+      <span class="conv-lang-flag" id="convLangFlag">🇸🇦</span>
+      <div>
+        <div class="conv-lang-name" id="convLangName">Arabic</div>
+        <div class="conv-lang-level">AI Conversation Tutor</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <div class="conv-status"><div class="conv-dot"></div>Live Session</div>
+      <button class="btn btn-ghost" onclick="window.location.href='dashboard.html'" style="font-size:13px;padding:7px 16px;">End Session</button>
+    </div>
+  </div>
+
+  <div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:.85rem 2rem;">
+    <div class="conv-lang-select">
+      <button class="cls-btn active" data-lang="ar" onclick="switchConvLang('ar')">🇸🇦 Arabic</button>
+      <button class="cls-btn" data-lang="zh" onclick="switchConvLang('zh')">🇨🇳 Chinese</button>
+      <button class="cls-btn" data-lang="es" onclick="switchConvLang('es')">🇪🇸 Spanish</button>
+      <button class="cls-btn" data-lang="fr" onclick="switchConvLang('fr')">🇫🇷 French</button>
+      <button class="cls-btn" data-lang="ur" onclick="switchConvLang('ur')">🇵🇰 Urdu</button>
+      <button class="cls-btn" data-lang="en" onclick="switchConvLang('en')">🇬🇧 English</button>
+    </div>
+  </div>
+
+  <div class="conv-body" id="convBody"></div>
+
+  <div class="conv-footer">
+    <div class="session-info">
+      <span id="messageCount">0 messages this session</span>
+      <span style="color:var(--accent);font-weight:600;">Powered by Claude AI</span>
+    </div>
+    <div class="conv-input-wrap">
+      <button class="conv-btn conv-btn-mic" id="micBtn" title="Voice input (coming soon)" onclick="showToast('Voice input coming in Phase 2!','info')">🎤</button>
+      <input class="conv-input" id="convInput" placeholder="Type your message in Arabic..." autocomplete="off"/>
+      <button class="conv-btn conv-btn-send" id="convSend" title="Send message">→</button>
+    </div>
+  </div>
+</div>
+<script src="main.js"></script>
+<script>
+let msgCount = 0
+const origAddMsg = addConvMessage
+window.addConvMessage = function(type, content) {
+  origAddMsg(type, content)
+  if (type === 'user') {
+    msgCount++
+    const el = document.getElementById('messageCount')
+    if (el) el.textContent = `${msgCount} message${msgCount !== 1 ? 's' : ''} this session`
+  }
+}
+</script>
+</body>
+</html>
